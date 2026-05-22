@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Make Webhook · Trigger</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:     #1a1008;
+      --paper:   #f5f0e8;
+      --cream:   #ede8dc;
+      --rule:    #c8b99a;
+      --accent:  #c0392b;
+      --accent2: #e8a020;
+      --muted:   #8a7a68;
+      --success: #2e7d32;
+      --error:   #c0392b;
+      --mono:    'IBM Plex Mono', monospace;
+      --serif:   'Playfair Display', Georgia, serif;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      font-family: var(--mono);
+      background: var(--paper);
+      color: var(--ink);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 2rem;
+      position: relative;
+    }
+
+    /* Subtle ruled-paper lines */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 27px,
+        rgba(200,185,154,0.35) 27px,
+        rgba(200,185,154,0.35) 28px
+      );
+      pointer-events: none;
+    }
+
+    /* Red margin line */
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; bottom: 0;
+      left: 88px;
+      width: 1px;
+      background: rgba(192,57,43,0.25);
+      pointer-events: none;
+    }
+
+    /* ── CARD ── */
+    .card {
+      background: rgba(245,240,232,0.92);
+      border: 1px solid var(--rule);
+      border-top: 4px solid var(--ink);
+      width: min(540px, 100%);
+      padding: 3rem 2.8rem 2.4rem;
+      position: relative;
+      box-shadow:
+        4px 4px 0 var(--rule),
+        8px 8px 0 rgba(200,185,154,0.3);
+      animation: slideIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(32px) rotate(-0.4deg); }
+      to   { opacity: 1; transform: translateY(0) rotate(0deg); }
+    }
+
+    /* Stamp decoration */
+    .stamp {
+      position: absolute;
+      top: 1.6rem;
+      right: 1.8rem;
+      width: 56px;
+      height: 56px;
+      border: 2.5px solid var(--accent);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1px;
+      opacity: 0.7;
+      transform: rotate(6deg);
+    }
+    .stamp-text {
+      font-size: 0.44rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    .stamp-line {
+      width: 28px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    /* ── HEADER ── */
+    .eyebrow {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.6rem;
+    }
+
+    h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      font-weight: 700;
+      line-height: 1.15;
+      margin-bottom: 0.3rem;
+      color: var(--ink);
+    }
+
+    h1 em {
+      font-style: italic;
+      color: var(--accent);
+    }
+
+    .subtitle {
+      font-size: 0.68rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* ── LINK TRIGGER ── */
+    .webhook-link-row {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 2rem;
+      padding: 0.9rem 1rem;
+      background: var(--cream);
+      border: 1px dashed var(--rule);
+      border-radius: 1px;
+    }
+
+    .link-icon {
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .webhook-link {
+      font-family: var(--mono);
+      font-size: 0.7rem;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      word-break: break-all;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      text-align: left;
+      transition: color 0.15s;
+    }
+    .webhook-link:hover { color: var(--ink); text-decoration: underline; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.6rem;
+    }
+    .divider-line { flex: 1; height: 1px; background: var(--rule); }
+    .divider-text {
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    /* ── FORM ── */
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 0.3rem; }
+
+    label {
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .input-wrap { position: relative; }
+
+    .field-num {
+      position: absolute;
+      left: 0.85rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.6rem;
+      color: var(--rule);
+      font-family: var(--mono);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    input {
+      width: 100%;
+      background: white;
+      border: 1px solid var(--rule);
+      border-radius: 0;
+      padding: 0.7rem 0.85rem 0.7rem 2.2rem;
+      font-family: var(--mono);
+      font-size: 0.82rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    input::placeholder { color: #b8a898; }
+
+    input:focus {
+      border-color: var(--ink);
+      box-shadow: 2px 2px 0 var(--ink);
+    }
+
+    input.err { border-color: var(--error); box-shadow: 2px 2px 0 var(--error); }
+
+    /* ── BUTTON ── */
+    .btn {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      background: var(--ink);
+      color: var(--paper);
+      border: 2px solid var(--ink);
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      transition: background 0.15s, color 0.15s, transform 0.1s, box-shadow 0.15s;
+      position: relative;
+    }
+
+    .btn::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border: 2px solid var(--ink);
+      transform: translate(4px, 4px);
+      transition: transform 0.15s;
+      pointer-events: none;
+    }
+
+    .btn:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: white;
+    }
+    .btn:hover::after { transform: translate(6px, 6px); border-color: var(--accent); }
+    .btn:active { transform: translate(2px, 2px); }
+    .btn:active::after { transform: translate(2px, 2px); }
+    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* spinner */
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .spinner {
+      width: 13px; height: 13px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    .loading .spinner { display: block; }
+    .loading .btn-label { display: none; }
+
+    /* ── STATUS ── */
+    .status {
+      margin-top: 1.1rem;
+      font-size: 0.7rem;
+      letter-spacing: 0.05em;
+      text-align: center;
+      min-height: 1.1em;
+      font-family: var(--mono);
+    }
+    .status.ok  { color: var(--success); }
+    .status.err { color: var(--error); }
+
+    /* ── FOOTER ── */
+    .card-footer {
+      margin-top: 2rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--rule);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-note {
+      font-size: 0.58rem;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+    }
+
+    .node-badge {
+      font-size: 0.55rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--cream);
+      border: 1px solid var(--rule);
+      padding: 0.25rem 0.55rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="card">
+  <!-- Stamp -->
+  <div class="stamp">
+    <div class="stamp-line"></div>
+    <div class="stamp-text">Make.com</div>
+    <div class="stamp-text">Webhook</div>
+    <div class="stamp-line"></div>
+  </div>
+
+  <p class="eyebrow">Automation Trigger</p>
+  <h1>Send to <em>Make</em></h1>
+  <p class="subtitle">Proxied via Node.js · No CORS restrictions</p>
+
+  <!-- Clickable webhook link -->
+  <div class="webhook-link-row">
+    <span class="link-icon">⇢</span>
+    <button class="webhook-link" onclick="openForm()" title="Click to fill in parameters and send">
+      hook.us1.make.com/162c6gmhrfp2s7edupkrocmyavvtmlcs
+    </button>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-text">Parameters</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Form -->
+  <div class="field-group">
+    <div class="field">
+      <label for="reg">Registration Number</label>
+      <div class="input-wrap">
+        <span class="field-num">01</span>
+        <input id="reg" type="text" placeholder="e.g. 10308354" value="10308354"/>
+      </div>
+    </div>
+    <div class="field">
+      <label for="name">Customer Name</label>
+      <div class="input-wrap">
+        <span class="field-num">02</span>
+        <input id="name" type="text" placeholder="e.g. Philippe Creignou" value="Philippe Creignou"/>
+      </div>
+    </div>
+    <div class="field">
+      <label for="email">Customer Email</label>
+      <div class="input-wrap">
+        <span class="field-num">03</span>
+        <input id="email" type="email" placeholder="e.g. user@example.com" value="philippe.creignou@docusign.com"/>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn" id="sendBtn" onclick="sendRequest()">
+    <div class="spinner"></div>
+    <span class="btn-label">Trigger Webhook →</span>
+  </button>
+
+  <div class="status" id="statusMsg"></div>
+
+  <div class="card-footer">
+    <span class="footer-note">Requests proxied server-side</span>
+    <span class="node-badge">Node.js Proxy</span>
+  </div>
+</div>
+
+<script>
+  function openForm() {
+    document.getElementById('reg').focus();
+  }
+
+  function setLoading(on) {
+    const btn = document.getElementById('sendBtn');
+    btn.disabled = on;
+    btn.classList.toggle('loading', on);
+  }
+
+  function setStatus(msg, type) {
+    const el = document.getElementById('statusMsg');
+    el.textContent = msg;
+    el.className = 'status ' + type;
+  }
+
+  ['reg','name','email'].forEach(id => {
+    document.getElementById(id).addEventListener('input', function() {
+      this.classList.remove('err');
+      setStatus('', '');
+    });
+  });
+
+  async function sendRequest() {
+    const reg   = document.getElementById('reg').value.trim();
+    const name  = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    let valid = true;
+    [['reg', reg], ['name', name], ['email', email]].forEach(([id, val]) => {
+      if (!val) { document.getElementById(id).classList.add('err'); valid = false; }
+    });
+    if (!valid) { setStatus('⚠ All fields are required.', 'err'); return; }
+
+    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRx.test(email)) {
+      document.getElementById('email').classList.add('err');
+      setStatus('⚠ Please enter a valid email address.', 'err');
+      return;
+    }
+
+    setLoading(true);
+    setStatus('', '');
+
+    try {
+      const params = new URLSearchParams({ registration_number: reg, customer_name: name, customer_email: email });
+      const res = await fetch('/proxy?' + params.toString());
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        setStatus(`✓ Webhook triggered successfully (upstream ${data.upstreamStatus})`, 'ok');
+      } else {
+        setStatus(`✕ ${data.error || 'Unexpected error.'}`, 'err');
+      }
+    } catch (err) {
+      setStatus('✕ Could not reach the proxy server.', 'err');
+    } finally {
+      setLoading(false);
+    }
+  }
+</script>
+</body>
+</html>
