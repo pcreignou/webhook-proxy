@@ -456,7 +456,13 @@
       const data = await res.json();
 
       if (res.ok && data.ok) {
-        setStatus(`✓ Webhook triggered successfully (upstream ${data.upstreamStatus})`, 'ok');
+        if (data.redirectUrl) {
+          // Make.com redirected to another URL (e.g. DocuSign) — open it in a new tab
+          setStatus(`✓ Webhook triggered — opening destination…`, 'ok');
+          window.open(data.redirectUrl, '_blank', 'noopener,noreferrer');
+        } else {
+          setStatus(`✓ Webhook triggered successfully (HTTP ${data.upstreamStatus})`, 'ok');
+        }
       } else {
         setStatus(`✕ ${data.error || 'Unexpected error.'}`, 'err');
       }
