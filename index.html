@@ -3,294 +3,277 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Make Webhook · Trigger</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <title>Send Enquiry | Leek Building Society</title>
+  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --ink:     #1a1008;
-      --paper:   #f5f0e8;
-      --cream:   #ede8dc;
-      --rule:    #c8b99a;
-      --accent:  #c0392b;
-      --accent2: #e8a020;
-      --muted:   #8a7a68;
-      --success: #2e7d32;
+      --navy:    #1a3a5c;
+      --navy-dk: #122840;
+      --teal:    #007a6e;
+      --teal-lt: #009688;
+      --gold:    #c8940a;
+      --white:   #ffffff;
+      --offwhite:#f4f6f8;
+      --border:  #d6dde4;
+      --text:    #2d3a45;
+      --muted:   #6b7a87;
       --error:   #c0392b;
-      --mono:    'IBM Plex Mono', monospace;
-      --serif:   'Playfair Display', Georgia, serif;
+      --success: #1a6b3c;
+      --sans:    'Source Sans 3', sans-serif;
+      --serif:   'Merriweather', Georgia, serif;
     }
 
-    html, body {
-      height: 100%;
-    }
+    html, body { height: 100%; }
 
     body {
-      font-family: var(--mono);
-      background: var(--paper);
-      color: var(--ink);
-      min-height: 100vh;
+      font-family: var(--sans);
+      background: var(--offwhite);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: var(--navy);
+      padding: 0;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      height: 72px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: var(--teal);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-icon svg { width: 26px; height: 26px; fill: white; }
+
+    .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
+    .logo-name  { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: white; letter-spacing: 0.01em; }
+    .logo-sub   { font-size: 0.62rem; color: rgba(255,255,255,0.65); letter-spacing: 0.12em; text-transform: uppercase; }
+
+    .header-contact {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.8);
+      text-align: right;
+      line-height: 1.4;
+    }
+    .header-contact strong { color: white; font-size: 0.95rem; }
+
+    .header-nav {
+      background: var(--navy-dk);
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: flex;
+      gap: 0;
+    }
+    .nav-inner a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      padding: 0.65rem 1.1rem;
+      display: block;
+      letter-spacing: 0.02em;
+      border-bottom: 3px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .nav-inner a:hover { color: white; }
+    .nav-inner a.active { color: white; border-bottom-color: var(--gold); }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb-bar {
+      background: white;
+      border-bottom: 1px solid var(--border);
+    }
+    .breadcrumb {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0.6rem 1.5rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+    .breadcrumb a { color: var(--teal); text-decoration: none; }
+    .breadcrumb a:hover { text-decoration: underline; }
+    .breadcrumb span { margin: 0 0.4rem; }
+
+    /* ── PAGE HERO ── */
+    .page-hero {
+      background: linear-gradient(135deg, var(--navy) 0%, #1e4d72 100%);
+      padding: 2.8rem 1.5rem 2.4rem;
+      text-align: center;
+    }
+    .page-hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      color: white;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .page-hero p {
+      color: rgba(255,255,255,0.75);
+      font-size: 0.95rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    /* ── MAIN LAYOUT ── */
+    .main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 3rem;
       display: grid;
-      place-items: center;
-      padding: 2rem;
-      position: relative;
+      grid-template-columns: 1fr 360px;
+      gap: 2rem;
+      align-items: start;
     }
 
-    /* Subtle ruled-paper lines */
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: repeating-linear-gradient(
-        to bottom,
-        transparent,
-        transparent 27px,
-        rgba(200,185,154,0.35) 27px,
-        rgba(200,185,154,0.35) 28px
-      );
-      pointer-events: none;
-    }
-
-    /* Red margin line */
-    body::after {
-      content: '';
-      position: fixed;
-      top: 0; bottom: 0;
-      left: 88px;
-      width: 1px;
-      background: rgba(192,57,43,0.25);
-      pointer-events: none;
+    @media (max-width: 768px) {
+      .main { grid-template-columns: 1fr; }
+      .sidebar { order: -1; }
     }
 
     /* ── CARD ── */
     .card {
-      background: rgba(245,240,232,0.92);
-      border: 1px solid var(--rule);
-      border-top: 4px solid var(--ink);
-      width: min(540px, 100%);
-      padding: 3rem 2.8rem 2.4rem;
-      position: relative;
-      box-shadow:
-        4px 4px 0 var(--rule),
-        8px 8px 0 rgba(200,185,154,0.3);
-      animation: slideIn 0.5s cubic-bezier(0.22,1,0.36,1) both;
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
     }
 
-    @keyframes slideIn {
-      from { opacity: 0; transform: translateY(32px) rotate(-0.4deg); }
-      to   { opacity: 1; transform: translateY(0) rotate(0deg); }
-    }
-
-    /* Stamp decoration */
-    .stamp {
-      position: absolute;
-      top: 1.6rem;
-      right: 1.8rem;
-      width: 56px;
-      height: 56px;
-      border: 2.5px solid var(--accent);
+    .card-header {
+      background: var(--teal);
+      padding: 1.1rem 1.6rem;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      gap: 1px;
-      opacity: 0.7;
-      transform: rotate(6deg);
+      gap: 0.7rem;
     }
-    .stamp-text {
-      font-size: 0.44rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--accent);
-      font-weight: 500;
-    }
-    .stamp-line {
-      width: 28px;
-      height: 1px;
-      background: var(--accent);
-    }
-
-    /* ── HEADER ── */
-    .eyebrow {
-      font-size: 0.58rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 0.6rem;
-    }
-
-    h1 {
+    .card-header h2 {
       font-family: var(--serif);
-      font-size: clamp(1.7rem, 4vw, 2.4rem);
+      font-size: 1.05rem;
+      color: white;
       font-weight: 700;
-      line-height: 1.15;
-      margin-bottom: 0.3rem;
-      color: var(--ink);
     }
-
-    h1 em {
-      font-style: italic;
-      color: var(--accent);
-    }
-
-    .subtitle {
-      font-size: 0.68rem;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-      margin-bottom: 2rem;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--rule);
-    }
-
-    /* ── LINK TRIGGER ── */
-    .webhook-link-row {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
-      margin-bottom: 2rem;
-      padding: 0.9rem 1rem;
-      background: var(--cream);
-      border: 1px dashed var(--rule);
-      border-radius: 1px;
-    }
-
-    .link-icon {
-      font-size: 1rem;
+    .card-header-icon {
+      width: 28px; height: 28px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
       flex-shrink: 0;
     }
+    .card-header-icon svg { width: 14px; height: 14px; fill: white; }
 
-    .webhook-link {
-      font-family: var(--mono);
-      font-size: 0.7rem;
-      color: var(--accent);
-      text-decoration: none;
-      letter-spacing: 0.02em;
-      word-break: break-all;
-      cursor: pointer;
-      background: none;
-      border: none;
-      padding: 0;
-      text-align: left;
-      transition: color 0.15s;
-    }
-    .webhook-link:hover { color: var(--ink); text-decoration: underline; }
+    .card-body { padding: 1.8rem 1.6rem; }
 
-    /* ── DIVIDER ── */
-    .divider {
-      display: flex;
-      align-items: center;
-      gap: 0.8rem;
+    /* ── WEBHOOK URL DISPLAY ── */
+    .webhook-url-box {
+      background: var(--offwhite);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--teal);
+      border-radius: 2px;
+      padding: 0.85rem 1rem;
       margin-bottom: 1.6rem;
-    }
-    .divider-line { flex: 1; height: 1px; background: var(--rule); }
-    .divider-text {
-      font-size: 0.6rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-    }
-
-    /* ── FORM ── */
-    .field-group {
       display: flex;
-      flex-direction: column;
-      gap: 1.2rem;
-      margin-bottom: 1.8rem;
+      align-items: flex-start;
+      gap: 0.7rem;
     }
+    .webhook-url-box svg { width: 16px; height: 16px; fill: var(--teal); flex-shrink: 0; margin-top: 2px; }
+    .webhook-url-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.15rem; }
+    .webhook-url-text  { font-size: 0.75rem; color: var(--teal); word-break: break-all; font-family: monospace; }
 
-    .field { display: flex; flex-direction: column; gap: 0.3rem; }
+    /* ── FORM FIELDS ── */
+    .field-group { display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 1.6rem; }
+
+    .field { display: flex; flex-direction: column; gap: 0.35rem; }
 
     label {
-      font-size: 0.58rem;
-      letter-spacing: 0.2em;
-      text-transform: uppercase;
-      color: var(--muted);
-      font-weight: 500;
-    }
-
-    .input-wrap { position: relative; }
-
-    .field-num {
-      position: absolute;
-      left: 0.85rem;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 0.6rem;
-      color: var(--rule);
-      font-family: var(--mono);
-      pointer-events: none;
-      user-select: none;
-    }
-
-    input {
-      width: 100%;
-      background: white;
-      border: 1px solid var(--rule);
-      border-radius: 0;
-      padding: 0.7rem 0.85rem 0.7rem 2.2rem;
-      font-family: var(--mono);
       font-size: 0.82rem;
-      color: var(--ink);
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: 0.01em;
+    }
+    label .req { color: var(--teal); margin-left: 2px; }
+
+    input[type="text"],
+    input[type="email"] {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 0.65rem 0.9rem;
+      font-family: var(--sans);
+      font-size: 0.9rem;
+      color: var(--text);
+      background: white;
       outline: none;
       transition: border-color 0.15s, box-shadow 0.15s;
     }
-
-    input::placeholder { color: #b8a898; }
-
+    input::placeholder { color: #aab4bc; }
     input:focus {
-      border-color: var(--ink);
-      box-shadow: 2px 2px 0 var(--ink);
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(0,122,110,0.12);
+    }
+    input.err {
+      border-color: var(--error);
+      box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
     }
 
-    input.err { border-color: var(--error); box-shadow: 2px 2px 0 var(--error); }
+    .field-hint { font-size: 0.73rem; color: var(--muted); }
 
-    /* ── BUTTON ── */
-    .btn {
+    /* ── SUBMIT BTN ── */
+    .btn-primary {
       width: 100%;
-      padding: 0.9rem 1.2rem;
-      background: var(--ink);
-      color: var(--paper);
-      border: 2px solid var(--ink);
-      font-family: var(--mono);
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
+      padding: 0.85rem 1.5rem;
+      background: var(--teal);
+      color: white;
+      border: none;
+      border-radius: 3px;
+      font-family: var(--sans);
+      font-size: 0.92rem;
+      font-weight: 600;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.6rem;
-      transition: background 0.15s, color 0.15s, transform 0.1s, box-shadow 0.15s;
-      position: relative;
+      gap: 0.5rem;
+      letter-spacing: 0.02em;
+      transition: background 0.15s, transform 0.1s;
     }
+    .btn-primary:hover { background: var(--teal-lt); }
+    .btn-primary:active { transform: scale(0.99); }
+    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .btn::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border: 2px solid var(--ink);
-      transform: translate(4px, 4px);
-      transition: transform 0.15s;
-      pointer-events: none;
-    }
-
-    .btn:hover {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: white;
-    }
-    .btn:hover::after { transform: translate(6px, 6px); border-color: var(--accent); }
-    .btn:active { transform: translate(2px, 2px); }
-    .btn:active::after { transform: translate(2px, 2px); }
-    .btn:disabled { opacity: 0.55; cursor: not-allowed; }
-
-    /* spinner */
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinner {
-      width: 13px; height: 13px;
-      border: 2px solid rgba(255,255,255,0.3);
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.35);
       border-top-color: white;
       border-radius: 50%;
       animation: spin 0.7s linear infinite;
@@ -300,116 +283,327 @@
     .loading .btn-label { display: none; }
 
     /* ── STATUS ── */
-    .status {
-      margin-top: 1.1rem;
-      font-size: 0.7rem;
-      letter-spacing: 0.05em;
-      text-align: center;
-      min-height: 1.1em;
-      font-family: var(--mono);
+    .status-msg {
+      margin-top: 1rem;
+      padding: 0.75rem 1rem;
+      border-radius: 3px;
+      font-size: 0.85rem;
+      display: none;
     }
-    .status.ok  { color: var(--success); }
-    .status.err { color: var(--error); }
+    .status-msg.ok  { display: block; background: #e8f5ee; border: 1px solid #a8d5b5; color: var(--success); }
+    .status-msg.err { display: block; background: #fdf0ee; border: 1px solid #e8b0aa; color: var(--error); }
+
+    /* ── DIVIDER ── */
+    .section-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.4rem 0;
+    }
+
+    /* ── SIDEBAR ── */
+    .sidebar { display: flex; flex-direction: column; gap: 1.2rem; }
+
+    .info-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .info-card-header {
+      background: var(--navy);
+      padding: 0.85rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .info-card-header h3 {
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: white;
+    }
+    .info-card-header svg { width: 16px; height: 16px; fill: rgba(255,255,255,0.7); flex-shrink: 0; }
+    .info-card-body { padding: 1.2rem; }
+
+    .contact-item {
+      display: flex;
+      gap: 0.7rem;
+      align-items: flex-start;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.85rem;
+    }
+    .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .contact-item svg { width: 16px; height: 16px; fill: var(--teal); flex-shrink: 0; margin-top: 2px; }
+    .contact-item strong { display: block; font-weight: 600; color: var(--text); }
+    .contact-item span { color: var(--muted); font-size: 0.78rem; }
+
+    .hours-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; }
+    .hours-table td { padding: 0.35rem 0; }
+    .hours-table td:last-child { text-align: right; color: var(--muted); }
+    .hours-table tr { border-bottom: 1px solid var(--border); }
+    .hours-table tr:last-child { border-bottom: none; }
+
+    .notice-box {
+      background: #fff8e6;
+      border: 1px solid #f0d080;
+      border-left: 4px solid var(--gold);
+      border-radius: 2px;
+      padding: 0.85rem 1rem;
+      font-size: 0.8rem;
+      color: #7a5800;
+      display: flex;
+      gap: 0.6rem;
+    }
+    .notice-box svg { width: 16px; height: 16px; fill: var(--gold); flex-shrink: 0; margin-top: 1px; }
 
     /* ── FOOTER ── */
-    .card-footer {
+    footer {
+      background: var(--navy-dk);
+      color: rgba(255,255,255,0.7);
+      padding: 2.5rem 1.5rem 1.5rem;
       margin-top: 2rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--rule);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
     }
-
-    .footer-note {
-      font-size: 0.58rem;
-      color: var(--muted);
-      letter-spacing: 0.06em;
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
     }
-
-    .node-badge {
-      font-size: 0.55rem;
-      letter-spacing: 0.15em;
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2rem;
+    }
+    .footer-col h4 {
+      font-size: 0.8rem;
       text-transform: uppercase;
-      color: var(--muted);
-      background: var(--cream);
-      border: 1px solid var(--rule);
-      padding: 0.25rem 0.55rem;
+      letter-spacing: 0.12em;
+      color: white;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
     }
+    .footer-col a {
+      display: block;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 0.82rem;
+      padding: 0.2rem 0;
+      transition: color 0.15s;
+    }
+    .footer-col a:hover { color: white; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1);
+      padding-top: 1.2rem;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+    }
+    .fscs-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 3px;
+      padding: 0.4rem 0.75rem;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 0.8rem;
+    }
+    .fscs-dot { width: 8px; height: 8px; background: #4caf8a; border-radius: 50%; flex-shrink: 0; }
   </style>
 </head>
 <body>
 
-<div class="card">
-  <!-- Stamp -->
-  <div class="stamp">
-    <div class="stamp-line"></div>
-    <div class="stamp-text">Make.com</div>
-    <div class="stamp-text">Webhook</div>
-    <div class="stamp-line"></div>
-  </div>
-
-  <p class="eyebrow">Automation Trigger</p>
-  <h1>Send to <em>Make</em></h1>
-  <p class="subtitle">Proxied via Node.js · No CORS restrictions</p>
-
-  <!-- Clickable webhook link -->
-  <div class="webhook-link-row">
-    <span class="link-icon">⇢</span>
-    <button class="webhook-link" onclick="openForm()" title="Click to fill in parameters and send">
-      hook.us1.make.com/162c6gmhrfp2s7edupkrocmyavvtmlcs
-    </button>
-  </div>
-
-  <div class="divider">
-    <div class="divider-line"></div>
-    <div class="divider-text">Parameters</div>
-    <div class="divider-line"></div>
-  </div>
-
-  <!-- Form -->
-  <div class="field-group">
-    <div class="field">
-      <label for="reg">Registration Number</label>
-      <div class="input-wrap">
-        <span class="field-num">01</span>
-        <input id="reg" type="text" placeholder="e.g. 10308354" value="10308354"/>
+<!-- ── HEADER ── -->
+<header>
+  <div class="header-top">
+    <a class="logo" href="#">
+      <div class="logo-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9v9a1 1 0 01-1 1H4a1 1 0 01-1-1v-9z"/><path d="M9 21V12h6v9" fill="rgba(255,255,255,0.35)"/></svg>
       </div>
-    </div>
-    <div class="field">
-      <label for="name">Customer Name</label>
-      <div class="input-wrap">
-        <span class="field-num">02</span>
-        <input id="name" type="text" placeholder="e.g. Philippe Creignou" value="Philippe Creignou"/>
+      <div class="logo-text">
+        <span class="logo-name">Leek Building Society</span>
+        <span class="logo-sub">Trusted since 1863</span>
       </div>
-    </div>
-    <div class="field">
-      <label for="email">Customer Email</label>
-      <div class="input-wrap">
-        <span class="field-num">03</span>
-        <input id="email" type="email" placeholder="e.g. user@example.com" value="philippe.creignou@docusign.com"/>
-      </div>
+    </a>
+    <div class="header-contact">
+      <span>General Enquiries</span><br/>
+      <strong>0800 093 0004</strong>
     </div>
   </div>
+  <div class="header-nav">
+    <nav class="nav-inner">
+      <a href="#">Savings</a>
+      <a href="#">Mortgages</a>
+      <a href="#">Insurance</a>
+      <a href="#">Financial Planning</a>
+      <a href="#">Branches</a>
+      <a href="#" class="active">Contact</a>
+      <a href="#">About Us</a>
+    </nav>
+  </div>
+</header>
 
-  <button class="btn" id="sendBtn" onclick="sendRequest()">
-    <div class="spinner"></div>
-    <span class="btn-label">Trigger Webhook →</span>
-  </button>
-
-  <div class="status" id="statusMsg"></div>
-
-  <div class="card-footer">
-    <span class="footer-note">Requests proxied server-side</span>
-    <span class="node-badge">Node.js Proxy</span>
+<!-- ── BREADCRUMB ── -->
+<div class="breadcrumb-bar">
+  <div class="breadcrumb">
+    <a href="#">Home</a><span>›</span><a href="#">Contact</a><span>›</span>Send Enquiry
   </div>
 </div>
 
-<script>
-  function openForm() {
-    document.getElementById('reg').focus();
-  }
+<!-- ── HERO ── -->
+<div class="page-hero">
+  <h1>Send an Enquiry</h1>
+  <p>Complete the form below and we'll process your request securely via our automated service.</p>
+</div>
 
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- FORM CARD -->
+  <div class="card">
+    <div class="card-header">
+      <div class="card-header-icon">
+        <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+      </div>
+      <h2>Online Enquiry Form</h2>
+    </div>
+    <div class="card-body">
+
+      <!-- Webhook destination -->
+      <div class="webhook-url-box">
+        <svg viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+        <div>
+          <div class="webhook-url-label">Automated Workflow Endpoint</div>
+          <div class="webhook-url-text">hook.us1.make.com/162c6gmhrfp2s7edupkrocmyavvtmlcs</div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <div class="field">
+          <label for="reg">Registration Number <span class="req">*</span></label>
+          <input id="reg" type="text" placeholder="e.g. 10308354" value="10308354"/>
+          <span class="field-hint">Your unique customer or account registration number</span>
+        </div>
+        <div class="field">
+          <label for="name">Customer Name <span class="req">*</span></label>
+          <input id="name" type="text" placeholder="e.g. Philippe Creignou" value="Philippe Creignou"/>
+        </div>
+        <div class="field">
+          <label for="email">Email Address <span class="req">*</span></label>
+          <input id="email" type="email" placeholder="e.g. name@example.com" value="philippe.creignou@docusign.com"/>
+          <span class="field-hint">We'll send confirmation to this address</span>
+        </div>
+      </div>
+
+      <hr class="section-divider"/>
+
+      <button class="btn-primary" id="sendBtn" onclick="sendRequest()">
+        <div class="spinner"></div>
+        <span class="btn-label">
+          <svg style="width:15px;height:15px;fill:white;vertical-align:middle;margin-right:6px;margin-top:-2px" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+          Submit Enquiry
+        </span>
+      </button>
+
+      <div class="status-msg" id="statusMsg"></div>
+
+    </div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="info-card">
+      <div class="info-card-header">
+        <svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        <h3>Contact Us Directly</h3>
+      </div>
+      <div class="info-card-body">
+        <div class="contact-item">
+          <svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+          <div>
+            <strong>0800 093 0004</strong>
+            <span>General enquiries (Freephone)</span>
+          </div>
+        </div>
+        <div class="contact-item">
+          <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" fill="rgba(0,122,110,0.3)"/></svg>
+          <div>
+            <strong>Head Office</strong>
+            <span>50 St. Edward Street, Leek, Staffordshire ST13 5DL</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-card">
+      <div class="info-card-header">
+        <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        <h3>Opening Hours</h3>
+      </div>
+      <div class="info-card-body">
+        <table class="hours-table">
+          <tr><td>Monday – Friday</td><td>9am – 5pm</td></tr>
+          <tr><td>Saturday</td><td>9:15am – 12pm</td></tr>
+          <tr><td>Sunday</td><td>Closed</td></tr>
+          <tr><td>Bank Holidays</td><td>Closed</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <div class="notice-box">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <div>
+        <strong style="display:block;margin-bottom:2px;color:#5a4000;">Secure & Authorised</strong>
+        Leek Building Society is authorised by the Prudential Regulation Authority and regulated by the FCA. FRN: 100014.
+      </div>
+    </div>
+
+  </aside>
+
+</div><!-- /main -->
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Products</h4>
+        <a href="#">Savings</a>
+        <a href="#">Mortgages</a>
+        <a href="#">Insurance</a>
+        <a href="#">Financial Advice</a>
+      </div>
+      <div class="footer-col">
+        <h4>Useful Links</h4>
+        <a href="#">About Us</a>
+        <a href="#">Find a Branch</a>
+        <a href="#">Careers</a>
+        <a href="#">Help &amp; Support</a>
+        <a href="#">News</a>
+      </div>
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <a href="#">Privacy Notice</a>
+        <a href="#">Cookie Policy</a>
+        <a href="#">Complaints</a>
+        <a href="#">Fraud Awareness</a>
+        <a href="#">Accessibility</a>
+      </div>
+    </div>
+    <div class="fscs-badge">
+      <div class="fscs-dot"></div>
+      FSCS Protected · Your eligible deposits are protected up to £85,000
+    </div>
+    <div class="footer-bottom">
+      Leek Building Society is a trading name of Leek United Building Society, authorised by the Prudential Regulation Authority and regulated by the Financial Conduct Authority and the Prudential Regulation Authority. Firm reference number: 100014.
+    </div>
+  </div>
+</footer>
+
+<script>
   function setLoading(on) {
     const btn = document.getElementById('sendBtn');
     btn.disabled = on;
@@ -418,14 +612,14 @@
 
   function setStatus(msg, type) {
     const el = document.getElementById('statusMsg');
-    el.textContent = msg;
-    el.className = 'status ' + type;
+    el.innerHTML = msg;
+    el.className = 'status-msg ' + type;
   }
 
   ['reg','name','email'].forEach(id => {
     document.getElementById(id).addEventListener('input', function() {
       this.classList.remove('err');
-      setStatus('', '');
+      document.getElementById('statusMsg').className = 'status-msg';
     });
   });
 
@@ -438,7 +632,7 @@
     [['reg', reg], ['name', name], ['email', email]].forEach(([id, val]) => {
       if (!val) { document.getElementById(id).classList.add('err'); valid = false; }
     });
-    if (!valid) { setStatus('⚠ All fields are required.', 'err'); return; }
+    if (!valid) { setStatus('⚠ Please complete all required fields.', 'err'); return; }
 
     const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRx.test(email)) {
@@ -457,17 +651,16 @@
 
       if (res.ok && data.ok) {
         if (data.redirectUrl) {
-          // Make.com redirected to another URL (e.g. DocuSign) — open it in a new tab
-          setStatus(`✓ Webhook triggered — opening destination…`, 'ok');
-          window.open(data.redirectUrl, '_blank', 'noopener,noreferrer');
+          setStatus('✓ Enquiry submitted successfully — opening your personalised link…', 'ok');
+          setTimeout(() => window.open(data.redirectUrl, '_blank', 'noopener,noreferrer'), 600);
         } else {
-          setStatus(`✓ Webhook triggered successfully (HTTP ${data.upstreamStatus})`, 'ok');
+          setStatus('✓ Your enquiry has been submitted successfully. We\'ll be in touch shortly.', 'ok');
         }
       } else {
-        setStatus(`✕ ${data.error || 'Unexpected error.'}`, 'err');
+        setStatus(`⚠ ${data.error || 'An unexpected error occurred. Please try again or call us on 0800 093 0004.'}`, 'err');
       }
     } catch (err) {
-      setStatus('✕ Could not reach the proxy server.', 'err');
+      setStatus('⚠ Unable to submit your enquiry. Please check your connection or call us on <strong>0800 093 0004</strong>.', 'err');
     } finally {
       setLoading(false);
     }
