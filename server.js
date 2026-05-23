@@ -7,29 +7,55 @@ const url = require('url');
 const PORT = process.env.PORT || 3000;
 const WEBHOOK_URL = 'https://hook.us1.make.com/162c6gmhrfp2s7edupkrocmyavvtmlcs';
 
-// ── Proxy the Make.com webhook request from the server side (no CORS) ──
-function proxyWebhook(params) {
+// ── Follow redirects and return the final URL ──
+function proxyWebhook(params, maxRedirects = 10) {
   return new Promise((resolve, reject) => {
+    let redirectCount = 0;
+
+    function doRequest(targetUrl) {
+      const parsed = new url.URL(targetUrl);
+      const options = {
+        hostname: parsed.hostname,
+        path: parsed.pathname + parsed.search,
+        method: 'GET',
+        headers: { 'User-Agent': 'Node-Proxy/1.0' }
+      };
+
+      const req = https.request(options, (res) => {
+        const { statusCode, headers } = res;
+
+        // Consume body so socket is released
+        res.resume();
+
+        // Handle redirects (301, 302, 303, 307, 308)
+        if ([301, 302, 303, 307, 308].includes(statusCode) && headers.location) {
+          if (redirectCount >= maxRedirects) {
+            return reject(new Error('Too many redirects'));
+          }
+          redirectCount++;
+          const nextUrl = headers.location.startsWith('http')
+            ? headers.location
+            : new url.URL(headers.location, targetUrl).toString();
+
+          console.log(`  ↳ Redirect ${redirectCount}: ${nextUrl}`);
+          return doRequest(nextUrl);
+        }
+
+        // Final destination reached
+        resolve({
+          status: statusCode,
+          finalUrl: targetUrl,        // the URL we actually landed on
+          redirected: redirectCount > 0
+        });
+      });
+
+      req.on('error', reject);
+      req.setTimeout(15000, () => { req.destroy(); reject(new Error('Timeout')); });
+      req.end();
+    }
+
     const query = new URLSearchParams(params).toString();
-    const target = `${WEBHOOK_URL}?${query}`;
-    const parsed = new url.URL(target);
-
-    const options = {
-      hostname: parsed.hostname,
-      path: parsed.pathname + parsed.search,
-      method: 'GET',
-      headers: { 'User-Agent': 'Node-Proxy/1.0' }
-    };
-
-    const req = https.request(options, (res) => {
-      let body = '';
-      res.on('data', chunk => body += chunk);
-      res.on('end', () => resolve({ status: res.statusCode, body }));
-    });
-
-    req.on('error', reject);
-    req.setTimeout(10000, () => { req.destroy(); reject(new Error('Timeout')); });
-    req.end();
+    doRequest(`${WEBHOOK_URL}?${query}`);
   });
 }
 
@@ -38,7 +64,6 @@ const server = http.createServer(async (req, res) => {
   const parsed = url.parse(req.url, true);
   const pathname = parsed.pathname;
 
-  // CORS headers (allows the HTML page to call /proxy from any origin)
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -48,7 +73,7 @@ const server = http.createServer(async (req, res) => {
     return res.end();
   }
 
-  // ── Serve the HTML frontend ──
+  // ── Serve frontend ──
   if (pathname === '/' || pathname === '/index.html') {
     const file = path.join(__dirname, 'index.html');
     fs.readFile(file, (err, data) => {
@@ -59,7 +84,7 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // ── Proxy endpoint: GET /proxy?registration_number=…&customer_name=…&customer_email=… ──
+  // ── Proxy endpoint ──
   if (pathname === '/proxy') {
     const { registration_number, customer_name, customer_email } = parsed.query;
 
@@ -70,18 +95,21 @@ const server = http.createServer(async (req, res) => {
 
     try {
       const result = await proxyWebhook({ registration_number, customer_name, customer_email });
-      console.log(`[${new Date().toISOString()}] Webhook triggered → HTTP ${result.status}`);
+      console.log(`[${new Date().toISOString()}] Done → HTTP ${result.status} | finalUrl: ${result.finalUrl}`);
       res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify({ ok: true, upstreamStatus: result.status }));
+      res.end(JSON.stringify({
+        ok: true,
+        upstreamStatus: result.status,
+        redirectUrl: result.redirected ? result.finalUrl : null
+      }));
     } catch (err) {
-      console.error(`[${new Date().toISOString()}] Webhook error:`, err.message);
+      console.error(`[${new Date().toISOString()}] Error:`, err.message);
       res.writeHead(502, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ error: 'Failed to reach webhook.', detail: err.message }));
     }
     return;
   }
 
-  // 404
   res.writeHead(404, { 'Content-Type': 'application/json' });
   res.end(JSON.stringify({ error: 'Not found' }));
 });
