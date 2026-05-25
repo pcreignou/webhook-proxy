@@ -1,3 +1,9 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Make Webhook · Trigger</title>
 <!-- Stylesheet -->
 <link rel="stylesheet" href="./Contact us for Information _ Leek Building Society_files/kiw4vwx.css">	
   <link href="./Contact us for Information _ Leek Building Society_files/icon" rel="stylesheet">
@@ -506,3 +512,135 @@ input:checked + .ap-switch-slider.ap-switch-big:before {
     }
     </style>
 	
+</head>
+<body>
+
+<div class="card">
+  <!-- Stamp -->
+  <div class="stamp">
+    <div class="stamp-line"></div>
+    <div class="stamp-text">Make.com</div>
+    <div class="stamp-text">Webhook</div>
+    <div class="stamp-line"></div>
+  </div>
+
+  <p class="eyebrow">Automation Trigger</p>
+  <h1>Send to <em>Make</em></h1>
+  <p class="subtitle">Proxied via Node.js · No CORS restrictions</p>
+
+  <!-- Clickable webhook link -->
+  <div class="webhook-link-row">
+    <span class="link-icon">⇢</span>
+    <button class="webhook-link" onclick="openForm()" title="Click to fill in parameters and send">
+      hook.us1.make.com/162c6gmhrfp2s7edupkrocmyavvtmlcs
+    </button>
+  </div>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-text">Parameters</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <!-- Form -->
+  <div class="field-group">
+    <div class="field">
+      <label for="reg">Registration Number</label>
+      <div class="input-wrap">
+        <span class="field-num">01</span>
+        <input id="reg" type="text" placeholder="e.g. 10308354" value="10308354"/>
+      </div>
+    </div>
+    <div class="field">
+      <label for="name">Customer Name</label>
+      <div class="input-wrap">
+        <span class="field-num">02</span>
+        <input id="name" type="text" placeholder="e.g. Philippe Creignou" value="Philippe Creignou"/>
+      </div>
+    </div>
+    <div class="field">
+      <label for="email">Customer Email</label>
+      <div class="input-wrap">
+        <span class="field-num">03</span>
+        <input id="email" type="email" placeholder="e.g. user@example.com" value="philippe.creignou@docusign.com"/>
+      </div>
+    </div>
+  </div>
+
+  <button class="btn" id="sendBtn" onclick="sendRequest()">
+    <div class="spinner"></div>
+    <span class="btn-label">Trigger Webhook →</span>
+  </button>
+
+  <div class="status" id="statusMsg"></div>
+
+  <div class="card-footer">
+    <span class="footer-note">Requests proxied server-side</span>
+    <span class="node-badge">Node.js Proxy</span>
+  </div>
+</div>
+
+<script>
+  function openForm() {
+    document.getElementById('reg').focus();
+  }
+
+  function setLoading(on) {
+    const btn = document.getElementById('sendBtn');
+    btn.disabled = on;
+    btn.classList.toggle('loading', on);
+  }
+
+  function setStatus(msg, type) {
+    const el = document.getElementById('statusMsg');
+    el.textContent = msg;
+    el.className = 'status ' + type;
+  }
+
+  ['reg','name','email'].forEach(id => {
+    document.getElementById(id).addEventListener('input', function() {
+      this.classList.remove('err');
+      setStatus('', '');
+    });
+  });
+
+  async function sendRequest() {
+    const reg   = document.getElementById('reg').value.trim();
+    const name  = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+
+    let valid = true;
+    [['reg', reg], ['name', name], ['email', email]].forEach(([id, val]) => {
+      if (!val) { document.getElementById(id).classList.add('err'); valid = false; }
+    });
+    if (!valid) { setStatus('⚠ All fields are required.', 'err'); return; }
+
+    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRx.test(email)) {
+      document.getElementById('email').classList.add('err');
+      setStatus('⚠ Please enter a valid email address.', 'err');
+      return;
+    }
+
+    setLoading(true);
+    setStatus('', '');
+
+    try {
+      const params = new URLSearchParams({ registration_number: reg, customer_name: name, customer_email: email });
+      const res = await fetch('/proxy?' + params.toString());
+      const data = await res.json();
+
+      if (res.ok && data.ok) {
+        setStatus(`✓ Webhook triggered successfully (upstream ${data.upstreamStatus})`, 'ok');
+      } else {
+        setStatus(`✕ ${data.error || 'Unexpected error.'}`, 'err');
+      }
+    } catch (err) {
+      setStatus('✕ Could not reach the proxy server.', 'err');
+    } finally {
+      setLoading(false);
+    }
+  }
+</script>
+</body>
+</html>
