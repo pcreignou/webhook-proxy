@@ -3,664 +3,525 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Send Enquiry | Leek Building Society</title>
-  <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap" rel="stylesheet"/>
+  <title>Fontara · Send Enquiry</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --navy:    #1a3a5c;
-      --navy-dk: #122840;
-      --teal:    #007a6e;
-      --teal-lt: #009688;
-      --gold:    #c8940a;
-      --white:   #ffffff;
-      --offwhite:#f4f6f8;
-      --border:  #d6dde4;
-      --text:    #2d3a45;
-      --muted:   #6b7a87;
-      --error:   #c0392b;
-      --success: #1a6b3c;
-      --sans:    'Source Sans 3', sans-serif;
-      --serif:   'Merriweather', Georgia, serif;
+      --mint:      #00e5a0;
+      --mint-dk:   #00c288;
+      --mint-glow: rgba(0,229,160,0.15);
+      --navy:      #111827;
+      --navy-lt:   #1c2333;
+      --navy-card: #162032;
+      --border:    rgba(255,255,255,0.08);
+      --border-foc:rgba(0,229,160,0.5);
+      --text:      #f0f4f8;
+      --muted:     #8a96a8;
+      --muted-lt:  #b0bac8;
+      --error:     #ff5a5a;
+      --error-bg:  rgba(255,90,90,0.1);
+      --success-bg:rgba(0,229,160,0.1);
+      --sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    html, body { height: 100%; }
-
-    body {
+    html, body {
+      min-height: 100%;
       font-family: var(--sans);
-      background: var(--offwhite);
-      color: var(--text);
-      font-size: 16px;
-      line-height: 1.6;
-    }
-
-    /* ── HEADER ── */
-    header {
       background: var(--navy);
-      padding: 0;
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
     }
 
-    .header-top {
+    /* ── TOPBAR ── */
+    .topbar {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      height: 72px;
+      padding: 0 2.5rem;
+      height: 64px;
+      border-bottom: 1px solid var(--border);
+      background: var(--navy);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
     }
 
-    .logo {
+    .logo img {
+      height: 28px;
+      display: block;
+    }
+
+    .topbar-right {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      text-decoration: none;
+      gap: 1.5rem;
     }
 
-    .logo-icon {
-      width: 42px;
-      height: 42px;
-      background: var(--teal);
-      border-radius: 4px;
+    .topbar-link {
+      font-size: 0.82rem;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color .15s;
+    }
+    .topbar-link:hover { color: var(--text); }
+
+    .topbar-btn {
+      font-size: 0.8rem;
+      font-weight: 600;
+      font-family: var(--sans);
+      color: var(--navy);
+      background: var(--mint);
+      border: none;
+      border-radius: 6px;
+      padding: 0.45rem 1rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background .15s;
+    }
+    .topbar-btn:hover { background: var(--mint-dk); }
+
+    /* ── PAGE ── */
+    .page {
+      min-height: calc(100vh - 64px);
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-shrink: 0;
+      padding: 3rem 1.5rem;
     }
 
-    .logo-icon svg { width: 26px; height: 26px; fill: white; }
+    /* ── OUTER WRAPPER ── */
+    .wrapper {
+      width: 100%;
+      max-width: 460px;
+      animation: up .4s cubic-bezier(.22,1,.36,1) both;
+    }
 
-    .logo-text { display: flex; flex-direction: column; line-height: 1.15; }
-    .logo-name  { font-family: var(--serif); font-size: 1.05rem; font-weight: 700; color: white; letter-spacing: 0.01em; }
-    .logo-sub   { font-size: 0.62rem; color: rgba(255,255,255,0.65); letter-spacing: 0.12em; text-transform: uppercase; }
+    @keyframes up {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
 
-    .header-contact {
-      font-size: 0.82rem;
-      color: rgba(255,255,255,0.8);
-      text-align: right;
-      line-height: 1.4;
-    }
-    .header-contact strong { color: white; font-size: 0.95rem; }
-
-    .header-nav {
-      background: var(--navy-dk);
-      border-top: 1px solid rgba(255,255,255,0.08);
-    }
-    .nav-inner {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0 1.5rem;
-      display: flex;
-      gap: 0;
-    }
-    .nav-inner a {
-      color: rgba(255,255,255,0.75);
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 500;
-      padding: 0.65rem 1.1rem;
-      display: block;
-      letter-spacing: 0.02em;
-      border-bottom: 3px solid transparent;
-      transition: color 0.15s, border-color 0.15s;
-    }
-    .nav-inner a:hover { color: white; }
-    .nav-inner a.active { color: white; border-bottom-color: var(--gold); }
-
-    /* ── BREADCRUMB ── */
-    .breadcrumb-bar {
-      background: white;
-      border-bottom: 1px solid var(--border);
-    }
-    .breadcrumb {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 0.6rem 1.5rem;
-      font-size: 0.78rem;
-      color: var(--muted);
-    }
-    .breadcrumb a { color: var(--teal); text-decoration: none; }
-    .breadcrumb a:hover { text-decoration: underline; }
-    .breadcrumb span { margin: 0 0.4rem; }
-
-    /* ── PAGE HERO ── */
-    .page-hero {
-      background: linear-gradient(135deg, var(--navy) 0%, #1e4d72 100%);
-      padding: 2.8rem 1.5rem 2.4rem;
+    /* ── HEADING ── */
+    .page-heading {
       text-align: center;
+      margin-bottom: 2rem;
     }
-    .page-hero h1 {
-      font-family: var(--serif);
-      font-size: clamp(1.6rem, 3vw, 2.2rem);
-      color: white;
+
+    .page-heading .eyebrow {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--mint);
+      margin-bottom: 0.6rem;
+    }
+
+    .page-heading h1 {
+      font-size: 1.65rem;
       font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+      letter-spacing: -0.02em;
       margin-bottom: 0.5rem;
     }
-    .page-hero p {
-      color: rgba(255,255,255,0.75);
-      font-size: 0.95rem;
-      max-width: 480px;
-      margin: 0 auto;
-    }
 
-    /* ── MAIN LAYOUT ── */
-    .main {
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 3rem;
-      display: grid;
-      grid-template-columns: 1fr 360px;
-      gap: 2rem;
-      align-items: start;
-    }
-
-    @media (max-width: 768px) {
-      .main { grid-template-columns: 1fr; }
-      .sidebar { order: -1; }
+    .page-heading p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.55;
     }
 
     /* ── CARD ── */
     .card {
-      background: white;
+      background: var(--navy-card);
       border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border-radius: 16px;
+      padding: 2.2rem 2rem;
+      box-shadow:
+        0 0 0 1px rgba(0,229,160,0.04),
+        0 24px 48px rgba(0,0,0,0.4);
     }
 
-    .card-header {
-      background: var(--teal);
-      padding: 1.1rem 1.6rem;
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-    }
-    .card-header h2 {
-      font-family: var(--serif);
-      font-size: 1.05rem;
-      color: white;
-      font-weight: 700;
-    }
-    .card-header-icon {
-      width: 28px; height: 28px;
-      background: rgba(255,255,255,0.2);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .card-header-icon svg { width: 14px; height: 14px; fill: white; }
-
-    .card-body { padding: 1.8rem 1.6rem; }
-
-    /* ── WEBHOOK URL DISPLAY ── */
-    .webhook-url-box {
-      background: var(--offwhite);
-      border: 1px solid var(--border);
-      border-left: 4px solid var(--teal);
-      border-radius: 2px;
-      padding: 0.85rem 1rem;
-      margin-bottom: 1.6rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 0.7rem;
-    }
-    .webhook-url-box svg { width: 16px; height: 16px; fill: var(--teal); flex-shrink: 0; margin-top: 2px; }
-    .webhook-url-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.15rem; }
-    .webhook-url-text  { font-size: 0.75rem; color: var(--teal); word-break: break-all; font-family: monospace; }
-
-    /* ── FORM FIELDS ── */
-    .field-group { display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 1.6rem; }
+    /* ── FIELDS ── */
+    .fields { display: flex; flex-direction: column; gap: 1.1rem; margin-bottom: 1.5rem; }
 
     .field { display: flex; flex-direction: column; gap: 0.35rem; }
 
-    label {
-      font-size: 0.82rem;
+    .field-label {
+      font-size: 0.78rem;
       font-weight: 600;
-      color: var(--text);
+      color: var(--muted-lt);
       letter-spacing: 0.01em;
     }
-    label .req { color: var(--teal); margin-left: 2px; }
+    .req { color: var(--mint); margin-left: 2px; }
+
+    .input-wrap { position: relative; }
+
+    .input-icon {
+      position: absolute;
+      left: 0.9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 15px;
+      height: 15px;
+      fill: #3a4558;
+      pointer-events: none;
+      transition: fill .15s;
+    }
+    .input-wrap:focus-within .input-icon { fill: var(--mint); }
 
     input[type="text"],
     input[type="email"] {
       width: 100%;
+      background: rgba(255,255,255,0.04);
       border: 1px solid var(--border);
-      border-radius: 3px;
-      padding: 0.65rem 0.9rem;
+      border-radius: 8px;
+      padding: 0.72rem 0.9rem 0.72rem 2.5rem;
       font-family: var(--sans);
       font-size: 0.9rem;
       color: var(--text);
-      background: white;
       outline: none;
-      transition: border-color 0.15s, box-shadow 0.15s;
+      transition: border-color .15s, box-shadow .15s, background .15s;
     }
-    input::placeholder { color: #aab4bc; }
+    input::placeholder { color: #3a4558; }
+
     input:focus {
-      border-color: var(--teal);
-      box-shadow: 0 0 0 3px rgba(0,122,110,0.12);
+      border-color: var(--border-foc);
+      background: rgba(0,229,160,0.04);
+      box-shadow: 0 0 0 3px var(--mint-glow);
     }
     input.err {
-      border-color: var(--error);
-      box-shadow: 0 0 0 3px rgba(192,57,43,0.1);
+      border-color: rgba(255,90,90,0.5);
+      box-shadow: 0 0 0 3px rgba(255,90,90,0.1);
     }
 
-    .field-hint { font-size: 0.73rem; color: var(--muted); }
+    .field-hint {
+      font-size: 0.71rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
 
-    /* ── SUBMIT BTN ── */
-    .btn-primary {
+    .field-err {
+      font-size: 0.72rem;
+      color: var(--error);
+      display: none;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .field-err.show { display: flex; }
+    .field-err svg { width: 12px; height: 12px; fill: var(--error); flex-shrink: 0; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 1.5rem 0;
+    }
+
+    /* ── SUBMIT ── */
+    .btn-submit {
       width: 100%;
       padding: 0.85rem 1.5rem;
-      background: var(--teal);
-      color: white;
+      background: var(--mint);
+      color: var(--navy);
       border: none;
-      border-radius: 3px;
+      border-radius: 8px;
       font-family: var(--sans);
       font-size: 0.92rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 0.5rem;
-      letter-spacing: 0.02em;
-      transition: background 0.15s, transform 0.1s;
+      letter-spacing: -0.01em;
+      transition: background .15s, box-shadow .15s, transform .1s;
+      position: relative;
+      overflow: hidden;
     }
-    .btn-primary:hover { background: var(--teal-lt); }
-    .btn-primary:active { transform: scale(0.99); }
-    .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .btn-submit::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .btn-submit:hover {
+      background: var(--mint-dk);
+      box-shadow: 0 4px 20px rgba(0,229,160,0.3);
+    }
+    .btn-submit:active { transform: scale(0.99); }
+    .btn-submit:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+    .btn-submit svg { width: 15px; height: 15px; fill: var(--navy); }
 
     @keyframes spin { to { transform: rotate(360deg); } }
     .spinner {
       width: 16px; height: 16px;
-      border: 2px solid rgba(255,255,255,0.35);
-      border-top-color: white;
+      border: 2px solid rgba(17,24,39,0.3);
+      border-top-color: var(--navy);
       border-radius: 50%;
-      animation: spin 0.7s linear infinite;
+      animation: spin .6s linear infinite;
       display: none;
     }
-    .loading .spinner { display: block; }
-    .loading .btn-label { display: none; }
+    .btn-loading .spinner  { display: block; }
+    .btn-loading .btn-text { display: none; }
 
-    /* ── STATUS ── */
-    .status-msg {
-      margin-top: 1rem;
-      padding: 0.75rem 1rem;
-      border-radius: 3px;
-      font-size: 0.85rem;
+    /* ── ALERTS ── */
+    .alert {
       display: none;
-    }
-    .status-msg.ok  { display: block; background: #e8f5ee; border: 1px solid #a8d5b5; color: var(--success); }
-    .status-msg.err { display: block; background: #fdf0ee; border: 1px solid #e8b0aa; color: var(--error); }
-
-    /* ── DIVIDER ── */
-    .section-divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 1.4rem 0;
-    }
-
-    /* ── SIDEBAR ── */
-    .sidebar { display: flex; flex-direction: column; gap: 1.2rem; }
-
-    .info-card {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-
-    .info-card-header {
-      background: var(--navy);
-      padding: 0.85rem 1.2rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .info-card-header h3 {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: white;
-    }
-    .info-card-header svg { width: 16px; height: 16px; fill: rgba(255,255,255,0.7); flex-shrink: 0; }
-    .info-card-body { padding: 1.2rem; }
-
-    .contact-item {
-      display: flex;
-      gap: 0.7rem;
-      align-items: flex-start;
-      padding: 0.6rem 0;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.85rem;
-    }
-    .contact-item:last-child { border-bottom: none; padding-bottom: 0; }
-    .contact-item svg { width: 16px; height: 16px; fill: var(--teal); flex-shrink: 0; margin-top: 2px; }
-    .contact-item strong { display: block; font-weight: 600; color: var(--text); }
-    .contact-item span { color: var(--muted); font-size: 0.78rem; }
-
-    .hours-table { width: 100%; font-size: 0.8rem; border-collapse: collapse; }
-    .hours-table td { padding: 0.35rem 0; }
-    .hours-table td:last-child { text-align: right; color: var(--muted); }
-    .hours-table tr { border-bottom: 1px solid var(--border); }
-    .hours-table tr:last-child { border-bottom: none; }
-
-    .notice-box {
-      background: #fff8e6;
-      border: 1px solid #f0d080;
-      border-left: 4px solid var(--gold);
-      border-radius: 2px;
+      border-radius: 8px;
       padding: 0.85rem 1rem;
-      font-size: 0.8rem;
-      color: #7a5800;
-      display: flex;
+      font-size: 0.83rem;
+      line-height: 1.5;
+      align-items: flex-start;
       gap: 0.6rem;
+      margin-bottom: 1rem;
     }
-    .notice-box svg { width: 16px; height: 16px; fill: var(--gold); flex-shrink: 0; margin-top: 1px; }
+    .alert.show { display: flex; }
+    .alert svg { width: 15px; height: 15px; flex-shrink: 0; margin-top: 1px; }
 
-    /* ── FOOTER ── */
-    footer {
-      background: var(--navy-dk);
-      color: rgba(255,255,255,0.7);
-      padding: 2.5rem 1.5rem 1.5rem;
-      margin-top: 2rem;
+    .alert-ok {
+      background: var(--success-bg);
+      border: 1px solid rgba(0,229,160,0.2);
+      color: #7aedce;
     }
-    .footer-inner {
-      max-width: 1100px;
-      margin: 0 auto;
+    .alert-ok svg { fill: var(--mint); }
+
+    .alert-err {
+      background: var(--error-bg);
+      border: 1px solid rgba(255,90,90,0.2);
+      color: #ffaaaa;
     }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 2rem;
-      margin-bottom: 2rem;
-    }
-    .footer-col h4 {
-      font-size: 0.8rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: white;
-      font-weight: 700;
-      margin-bottom: 0.8rem;
-    }
-    .footer-col a {
-      display: block;
-      color: rgba(255,255,255,0.6);
-      text-decoration: none;
-      font-size: 0.82rem;
-      padding: 0.2rem 0;
-      transition: color 0.15s;
-    }
-    .footer-col a:hover { color: white; }
-    .footer-bottom {
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 1.2rem;
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.4);
-    }
-    .fscs-badge {
-      display: inline-flex;
+    .alert-err svg { fill: var(--error); }
+
+    /* ── ENDPOINT STRIP ── */
+    .endpoint-strip {
+      display: flex;
       align-items: center;
-      gap: 0.5rem;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 3px;
-      padding: 0.4rem 0.75rem;
-      font-size: 0.7rem;
-      color: rgba(255,255,255,0.6);
-      margin-bottom: 0.8rem;
+      gap: 0.6rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.65rem 0.9rem;
+      margin-bottom: 1.5rem;
     }
-    .fscs-dot { width: 8px; height: 8px; background: #4caf8a; border-radius: 50%; flex-shrink: 0; }
+    .endpoint-strip svg { width: 13px; height: 13px; fill: var(--mint); flex-shrink: 0; }
+    .endpoint-strip-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+    .endpoint-strip-url { font-size: 0.69rem; color: #4a9e8a; font-family: monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .endpoint-divider { width: 1px; height: 24px; background: var(--border); flex-shrink: 0; }
+
+    /* ── FOOTER NOTE ── */
+    .card-footer {
+      margin-top: 1.2rem;
+      text-align: center;
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .card-footer a { color: #4a9e8a; text-decoration: none; }
+    .card-footer a:hover { color: var(--mint); }
+
+    /* ── POWERED BY ── */
+    .powered {
+      text-align: center;
+      margin-top: 1.8rem;
+      font-size: 0.68rem;
+      color: #2e3a4a;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .topbar { padding: 0 1.2rem; }
+      .topbar-link { display: none; }
+      .card { padding: 1.6rem 1.2rem; }
+    }
   </style>
 </head>
 <body>
 
-<!-- ── HEADER ── -->
-<header>
-  <div class="header-top">
-    <a class="logo" href="#">
-      <div class="logo-icon">
-        <svg viewBox="0 0 24 24"><path d="M3 12l9-9 9 9v9a1 1 0 01-1 1H4a1 1 0 01-1-1v-9z"/><path d="M9 21V12h6v9" fill="rgba(255,255,255,0.35)"/></svg>
-      </div>
-      <div class="logo-text">
-        <span class="logo-name">Leek Building Society</span>
-        <span class="logo-sub">Trusted since 1863</span>
-      </div>
-    </a>
-    <div class="header-contact">
-      <span>General Enquiries</span><br/>
-      <strong>0800 093 0004</strong>
-    </div>
-  </div>
-  <div class="header-nav">
-    <nav class="nav-inner">
-      <a href="#">Savings</a>
-      <a href="#">Mortgages</a>
-      <a href="#">Insurance</a>
-      <a href="#">Financial Planning</a>
-      <a href="#">Branches</a>
-      <a href="#" class="active">Contact</a>
-      <a href="#">About Us</a>
-    </nav>
+<!-- ── TOPBAR ── -->
+<header class="topbar">
+  <a class="logo" href="#">
+    <img src="/logo.png" alt="Fontara"/>
+  </a>
+  <div class="topbar-right">
+    <a class="topbar-link" href="#">Home</a>
+    <a class="topbar-link" href="#">Contact</a>
+    <a class="topbar-btn" href="#">Sign in</a>
   </div>
 </header>
 
-<!-- ── BREADCRUMB ── -->
-<div class="breadcrumb-bar">
-  <div class="breadcrumb">
-    <a href="#">Home</a><span>›</span><a href="#">Contact</a><span>›</span>Send Enquiry
-  </div>
-</div>
+<!-- ── PAGE ── -->
+<main class="page">
+  <div class="wrapper">
 
-<!-- ── HERO ── -->
-<div class="page-hero">
-  <h1>Send an Enquiry</h1>
-  <p>Complete the form below and we'll process your request securely via our automated service.</p>
-</div>
-
-<!-- ── MAIN ── -->
-<div class="main">
-
-  <!-- FORM CARD -->
-  <div class="card">
-    <div class="card-header">
-      <div class="card-header-icon">
-        <svg viewBox="0 0 24 24"><path d="M20 4H4a2 2 0 00-2 2v12a2 2 0 002 2h16a2 2 0 002-2V6a2 2 0 00-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
-      </div>
-      <h2>Online Enquiry Form</h2>
+    <!-- HEADING -->
+    <div class="page-heading">
+      <div class="eyebrow">Document Workflow</div>
+      <h1>Start your application</h1>
+      <p>Enter your details below to initiate the automated signing workflow.</p>
     </div>
-    <div class="card-body">
 
-      <!-- Webhook destination -->
-      <div class="webhook-url-box">
-        <svg viewBox="0 0 24 24"><path d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
-        <div>
-          <div class="webhook-url-label">Automated Workflow Endpoint</div>
-          <div class="webhook-url-text">hook.us1.make.com/162c6gmhrfp2s7edupkrocmyavvtmlcs</div>
-        </div>
+    <!-- CARD -->
+    <div class="card">
+
+      <!-- Endpoint indicator -->
+      <div class="endpoint-strip">
+        <svg viewBox="0 0 24 24"><path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+        <span class="endpoint-strip-label">Endpoint</span>
+        <div class="endpoint-divider"></div>
+        <span class="endpoint-strip-url">hook.us1.make.com/162c6gmhrfp2s7edupkrocmyavvtmlcs</span>
       </div>
 
-      <div class="field-group">
-        <div class="field">
-          <label for="reg">Registration Number <span class="req">*</span></label>
-          <input id="reg" type="text" placeholder="e.g. 10308354" value="10308354"/>
-          <span class="field-hint">Your unique customer or account registration number</span>
-        </div>
-        <div class="field">
-          <label for="name">Customer Name <span class="req">*</span></label>
-          <input id="name" type="text" placeholder="e.g. Philippe Creignou" value="Philippe Creignou"/>
-        </div>
-        <div class="field">
-          <label for="email">Email Address <span class="req">*</span></label>
-          <input id="email" type="email" placeholder="e.g. name@example.com" value="philippe.creignou@docusign.com"/>
-          <span class="field-hint">We'll send confirmation to this address</span>
-        </div>
+      <!-- Alerts -->
+      <div class="alert alert-ok" id="alert-ok">
+        <svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l3-3z" clip-rule="evenodd"/></svg>
+        <span id="alert-ok-text"></span>
+      </div>
+      <div class="alert alert-err" id="alert-err">
+        <svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+        <span id="alert-err-text"></span>
       </div>
 
-      <hr class="section-divider"/>
+      <!-- Fields -->
+      <div class="fields">
 
-      <button class="btn-primary" id="sendBtn" onclick="sendRequest()">
+        <div class="field">
+          <label class="field-label" for="reg">Registration number <span class="req">*</span></label>
+          <div class="input-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <input id="reg" type="text" placeholder="e.g. 10308354" value="10308354"/>
+          </div>
+          <span class="field-err" id="reg-err">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="white" stroke-width="2"/></svg>
+            This field is required
+          </span>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="name">Full name <span class="req">*</span></label>
+          <div class="input-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/></svg>
+            <input id="name" type="text" placeholder="e.g. Philippe Creignou" value="Philippe Creignou"/>
+          </div>
+          <span class="field-err" id="name-err">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="white" stroke-width="2"/></svg>
+            This field is required
+          </span>
+        </div>
+
+        <div class="field">
+          <label class="field-label" for="email">Email address <span class="req">*</span></label>
+          <div class="input-wrap">
+            <svg class="input-icon" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <input id="email" type="email" placeholder="e.g. name@company.com" value="philippe.creignou@docusign.com"/>
+          </div>
+          <span class="field-hint">A copy of the completed document will be sent here</span>
+          <span class="field-err" id="email-err">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12" stroke="white" stroke-width="2"/><line x1="12" y1="16" x2="12.01" y2="16" stroke="white" stroke-width="2"/></svg>
+            Please enter a valid email address
+          </span>
+        </div>
+
+      </div><!-- /fields -->
+
+      <div class="divider"></div>
+
+      <button class="btn-submit" id="sendBtn" onclick="sendRequest()">
         <div class="spinner"></div>
-        <span class="btn-label">
-          <svg style="width:15px;height:15px;fill:white;vertical-align:middle;margin-right:6px;margin-top:-2px" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-          Submit Enquiry
+        <span class="btn-text">
+          Continue
+          <svg style="width:14px;height:14px;fill:var(--navy);margin-left:4px;vertical-align:middle" viewBox="0 0 24 24"><path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>
         </span>
       </button>
 
-      <div class="status-msg" id="statusMsg"></div>
+    </div><!-- /card -->
 
+    <div class="card-footer">
+      By continuing you agree to Fontara's
+      <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.
     </div>
+
+    <div class="powered">Secured &amp; automated by Fontara</div>
+
   </div>
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-
-    <div class="info-card">
-      <div class="info-card-header">
-        <svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-        <h3>Contact Us Directly</h3>
-      </div>
-      <div class="info-card-body">
-        <div class="contact-item">
-          <svg viewBox="0 0 24 24"><path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-          <div>
-            <strong>0800 093 0004</strong>
-            <span>General enquiries (Freephone)</span>
-          </div>
-        </div>
-        <div class="contact-item">
-          <svg viewBox="0 0 24 24"><path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" fill="rgba(0,122,110,0.3)"/></svg>
-          <div>
-            <strong>Head Office</strong>
-            <span>50 St. Edward Street, Leek, Staffordshire ST13 5DL</span>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="info-card">
-      <div class="info-card-header">
-        <svg viewBox="0 0 24 24"><path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        <h3>Opening Hours</h3>
-      </div>
-      <div class="info-card-body">
-        <table class="hours-table">
-          <tr><td>Monday – Friday</td><td>9am – 5pm</td></tr>
-          <tr><td>Saturday</td><td>9:15am – 12pm</td></tr>
-          <tr><td>Sunday</td><td>Closed</td></tr>
-          <tr><td>Bank Holidays</td><td>Closed</td></tr>
-        </table>
-      </div>
-    </div>
-
-    <div class="notice-box">
-      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      <div>
-        <strong style="display:block;margin-bottom:2px;color:#5a4000;">Secure & Authorised</strong>
-        Leek Building Society is authorised by the Prudential Regulation Authority and regulated by the FCA. FRN: 100014.
-      </div>
-    </div>
-
-  </aside>
-
-</div><!-- /main -->
-
-<!-- ── FOOTER ── -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-grid">
-      <div class="footer-col">
-        <h4>Products</h4>
-        <a href="#">Savings</a>
-        <a href="#">Mortgages</a>
-        <a href="#">Insurance</a>
-        <a href="#">Financial Advice</a>
-      </div>
-      <div class="footer-col">
-        <h4>Useful Links</h4>
-        <a href="#">About Us</a>
-        <a href="#">Find a Branch</a>
-        <a href="#">Careers</a>
-        <a href="#">Help &amp; Support</a>
-        <a href="#">News</a>
-      </div>
-      <div class="footer-col">
-        <h4>Legal</h4>
-        <a href="#">Privacy Notice</a>
-        <a href="#">Cookie Policy</a>
-        <a href="#">Complaints</a>
-        <a href="#">Fraud Awareness</a>
-        <a href="#">Accessibility</a>
-      </div>
-    </div>
-    <div class="fscs-badge">
-      <div class="fscs-dot"></div>
-      FSCS Protected · Your eligible deposits are protected up to £85,000
-    </div>
-    <div class="footer-bottom">
-      Leek Building Society is a trading name of Leek United Building Society, authorised by the Prudential Regulation Authority and regulated by the Financial Conduct Authority and the Prudential Regulation Authority. Firm reference number: 100014.
-    </div>
-  </div>
-</footer>
+</main>
 
 <script>
-  function setLoading(on) {
-    const btn = document.getElementById('sendBtn');
-    btn.disabled = on;
-    btn.classList.toggle('loading', on);
-  }
-
-  function setStatus(msg, type) {
-    const el = document.getElementById('statusMsg');
-    el.innerHTML = msg;
-    el.className = 'status-msg ' + type;
-  }
-
   ['reg','name','email'].forEach(id => {
     document.getElementById(id).addEventListener('input', function() {
       this.classList.remove('err');
-      document.getElementById('statusMsg').className = 'status-msg';
+      document.getElementById(id + '-err').classList.remove('show');
+      clearAlerts();
     });
   });
 
+  function clearAlerts() {
+    document.getElementById('alert-ok').classList.remove('show');
+    document.getElementById('alert-err').classList.remove('show');
+  }
+
+  function showOk(msg) {
+    clearAlerts();
+    document.getElementById('alert-ok-text').textContent = msg;
+    document.getElementById('alert-ok').classList.add('show');
+  }
+
+  function showErr(msg) {
+    clearAlerts();
+    document.getElementById('alert-err-text').textContent = msg;
+    document.getElementById('alert-err').classList.add('show');
+  }
+
+  function setLoading(on) {
+    const btn = document.getElementById('sendBtn');
+    btn.disabled = on;
+    btn.classList.toggle('btn-loading', on);
+  }
+
   async function sendRequest() {
+    clearAlerts();
+    let valid = true;
+
     const reg   = document.getElementById('reg').value.trim();
     const name  = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
 
-    let valid = true;
-    [['reg', reg], ['name', name], ['email', email]].forEach(([id, val]) => {
-      if (!val) { document.getElementById(id).classList.add('err'); valid = false; }
-    });
-    if (!valid) { setStatus('⚠ Please complete all required fields.', 'err'); return; }
-
-    const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRx.test(email)) {
+    if (!reg)  { document.getElementById('reg').classList.add('err');  document.getElementById('reg-err').classList.add('show');  valid = false; }
+    if (!name) { document.getElementById('name').classList.add('err'); document.getElementById('name-err').classList.add('show'); valid = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       document.getElementById('email').classList.add('err');
-      setStatus('⚠ Please enter a valid email address.', 'err');
-      return;
+      document.getElementById('email-err').classList.add('show');
+      valid = false;
     }
+    if (!valid) return;
 
     setLoading(true);
-    setStatus('', '');
 
     try {
       const params = new URLSearchParams({ registration_number: reg, customer_name: name, customer_email: email });
-      const res = await fetch('/proxy?' + params.toString());
+      const res  = await fetch('/proxy?' + params.toString());
       const data = await res.json();
 
       if (res.ok && data.ok) {
         if (data.redirectUrl) {
-          setStatus('✓ Enquiry submitted successfully — opening your personalised link…', 'ok');
-          setTimeout(() => window.open(data.redirectUrl, '_blank', 'noopener,noreferrer'), 600);
+          showOk('Submitted successfully — opening your document now…');
+          setTimeout(() => window.open(data.redirectUrl, '_blank', 'noopener,noreferrer'), 800);
         } else {
-          setStatus('✓ Your enquiry has been submitted successfully. We\'ll be in touch shortly.', 'ok');
+          showOk('Your application has been submitted successfully.');
         }
       } else {
-        setStatus(`⚠ ${data.error || 'An unexpected error occurred. Please try again or call us on 0800 093 0004.'}`, 'err');
+        showErr(data.error || 'Something went wrong. Please try again.');
       }
-    } catch (err) {
-      setStatus('⚠ Unable to submit your enquiry. Please check your connection or call us on <strong>0800 093 0004</strong>.', 'err');
+    } catch (e) {
+      showErr('Unable to connect. Please check your network and try again.');
     } finally {
       setLoading(false);
     }
