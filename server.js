@@ -73,12 +73,17 @@ const server = http.createServer(async (req, res) => {
     return res.end();
   }
 
-  // ── Serve frontend ──
-  if (pathname === '/' || pathname === '/index.html') {
-    const file = path.join(__dirname, 'index.html');
-    fs.readFile(file, (err, data) => {
-      if (err) { res.writeHead(500); return res.end('Could not load index.html'); }
-      res.writeHead(200, { 'Content-Type': 'text/html' });
+  // ── Serve static assets ──
+  const staticMap = {
+    '/':           { file: 'index.html', mime: 'text/html' },
+    '/index.html': { file: 'index.html', mime: 'text/html' },
+    '/logo.png':   { file: 'logo.png',   mime: 'image/png' },
+  };
+  if (staticMap[pathname]) {
+    const { file, mime } = staticMap[pathname];
+    fs.readFile(path.join(__dirname, file), (err, data) => {
+      if (err) { res.writeHead(404); return res.end('Not found'); }
+      res.writeHead(200, { 'Content-Type': mime });
       res.end(data);
     });
     return;
